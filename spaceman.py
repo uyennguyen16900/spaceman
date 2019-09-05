@@ -1,5 +1,5 @@
 import random
-letters = []
+string = ""
 
 def load_word():
     '''
@@ -45,15 +45,22 @@ def get_guessed_word(secret_word, letters_guessed):
     '''
 
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
-    string = ""
-    for letter in secret_word:
-        for index, letter_1 in enumerate(letters_guessed):
+    for letter in letters_guessed:
+        for index, letter_1 in enumerate(secret_word):
             if letter == letter_1:
-                string += letter_1
-            else:
-                string += "_"
+                letters[index] = letter_1
+    string = "".join(letters)
     return string
 
+
+
+    # for letter in letters_guessed:
+    #     for index, letter_1 in enumerate(secret_word):
+    #         if letter == letter_1:
+    #             string[index] += letter_1
+    #         else:
+    #             string[index] += "_"
+    # return string
 
 def is_guess_in_word(guess, secret_word):
     '''
@@ -65,13 +72,19 @@ def is_guess_in_word(guess, secret_word):
         bool: True if the guess is in the secret_word, False otherwise
     '''
     #TODO: check if the letter guess is in the secret word
+    # i = 0
+    # while i < len(secret_word) and guess != secret_word[i]:
+    #     i += 1
+    # if guess == secret_word[i]:
+    #     return True
+    # return False
+
     i = 0
-    while i < len(secret_word) and guess != secret_word[i]:
+    while i < len(secret_word):
+        if guess == secret_word[i]:
+            return True
         i += 1
-    if guess == secret_word[i]:
-        return True
-    else:
-        return False
+    return False
 
 def spaceman(secret_word):
     '''
@@ -101,19 +114,22 @@ def spaceman(secret_word):
                     return False
             if is_guess_in_word(input_letter, secret_word) == False:
                 print("Your guess is not in the secret word! Try again.")
-    return True
     #TODO: show the guessed word so far
 
     #TODO: check if the game has been won or lost
 
 
-def test():
-    print(get_guessed_word("u", "uyun"))
-    print(is_guess_in_word("i", "uyen"))
-    print(is_word_guessed("uyei", "uyen"))
-test()
+# def test():
+#     list = ["u", "y", "e", "n"]
+#     print(get_guessed_word("u", list))
+#     print(is_guess_in_word("u", "uyen"))
+#     print(is_word_guessed("uyei", "uyen"))
+# test()
 
 #These function calls that will start the game
 secret_word = load_word()
 print(secret_word)
+letters = ["_"] * len(secret_word)
+# print(letters)
+
 spaceman(secret_word)
