@@ -1,6 +1,10 @@
 import random
+import sys
+from termcolor import colored
+
 string = ""
 letters = []
+
 
 def load_word():
     '''
@@ -43,7 +47,6 @@ def get_guessed_word(secret_word, letters_guessed):
     Returns:
         string: letters and underscores.  For letters in the word that the user has guessed correctly, the string should contain the letter at the correct position.  For letters in the word that the user has not yet guessed, shown an _ (underscore) instead.
     '''
-
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
     for letter in letters_guessed:
         for index, letter_1 in enumerate(secret_word):
@@ -51,16 +54,6 @@ def get_guessed_word(secret_word, letters_guessed):
                 letters[index] = letter_1
     string = "".join(letters)
     return string
-
-
-
-    # for letter in letters_guessed:
-    #     for index, letter_1 in enumerate(secret_word):
-    #         if letter == letter_1:
-    #             string[index] += letter_1
-    #         else:
-    #             string[index] += "_"
-    # return string
 
 def is_guess_in_word(guess, secret_word):
     '''
@@ -72,19 +65,19 @@ def is_guess_in_word(guess, secret_word):
         bool: True if the guess is in the secret_word, False otherwise
     '''
     #TODO: check if the letter guess is in the secret word
-    # i = 0
-    # while i < len(secret_word) and guess != secret_word[i]:
-    #     i += 1
-    # if guess == secret_word[i]:
-    #     return True
-    # return False
-
     i = 0
     while i < len(secret_word):
         if guess == secret_word[i]:
             return True
         i += 1
     return False
+
+# For information about removing characters from a string, I read https://www.w3resource.com/python-exercises/string/python-data-type-string-exercise-9.php
+def remove_letter(str, letter_guessed):
+    for index, letter in enumerate(str):
+        if letter == letter_guessed:
+            str = str[:index] + str[index+1:]
+    return str
 
 def spaceman(secret_word):
     '''
@@ -93,12 +86,14 @@ def spaceman(secret_word):
       secret_word (string): the secret word to guess.
     '''
 
-
     #TODO: show the player information about the game according to the project spec
     #TODO: Ask the player to guess one letter per round and check that it is only one letter
     #TODO: Check if the guessed letter is in the secret or not and give the player feedback
     #TODO: show the guessed word so far
     #TODO: check if the game has been won or lost
+    incorrect_guesses = 7
+    letters_to_guessed = "abcdefghijklmnopqrstuvwxyz"
+    length = len(letters_to_guessed)
 
     while True:
         input_letter = input("Please enter a letter: ")
@@ -111,27 +106,38 @@ def spaceman(secret_word):
                 print("Your guess is in the secret word!")
                 guessed_word = get_guessed_word(secret_word, input_letter)
                 print(guessed_word)
+                letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
+                print("The letters haven't been yet guessed: " + letters_to_guessed)
                 if is_word_guessed(secret_word, guessed_word):
                     print("You won!")
                     return False
-            if is_guess_in_word(input_letter, secret_word) == False:
-                print("Your guess is not in the secret word! Try again.")
-    user_input = input("Do you wanna play again?")
 
-# def test():
-#     list = ["u", "y", "e", "n"]
-#     print(get_guessed_word("u", list))
-#     print(is_guess_in_word("u", "uyen"))
-#     print(is_word_guessed("uyei", "uyen"))
+            if is_guess_in_word(input_letter, secret_word) == False:
+                incorrect_guesses -= 1
+                if incorrect_guesses == 0:
+                    print("You lost!")
+                    return False
+                print("Your guess is not in the secret word! Try again.")
+                print("You have " + str(incorrect_guesses) + " incorrect guesses left.")
+                letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
+                print("The letters haven't been yet guessed: " + letters_to_guessed)
+
+def test():
+    list = ["u", "y", "e", "n"]
+    print(get_guessed_word("u", list))
+    print(is_guess_in_word("u", "uyen"))
+    print(is_word_guessed("uyei", "uyen"))
+    print(remove_letter("uyen", "y"))
 # test()
 
 #These function calls that will start the game
-# print(letters)
 play = True
 while play:
     secret_word = load_word()
     print(secret_word)
     letters = ["_"] * len(secret_word)
+    print("Welcome to Spaceman Game!")
+    print("You have 7 incorrect guesses, please enter one letter per round.")
     spaceman(secret_word)
     print("The secret word is: " + secret_word)
     user_input = input("Do you want to play again? Y/N ")
