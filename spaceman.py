@@ -96,28 +96,29 @@ def spaceman(secret_word):
     length = len(letters_to_guessed)
 
     while True:
-        input_letter = input("Please enter a letter: ")
+        input_letter = input(colored("Please enter a letter: ", "cyan", attrs = ["bold"]))
         if len(input_letter) > 1:
-            print("Please enter one letter at a time.")
+            print(colored("Please enter one letter at a time.", "green"))
         elif len(input_letter) == 0:
-            print("You did not enter a letter.")
+            print(colored("You did not enter a letter.", "green"))
         else:
             if is_guess_in_word(input_letter, secret_word):
-                print("Your guess is in the secret word!")
+                print(colored("Your guess is in the secret word!", "magenta"))
                 guessed_word = get_guessed_word(secret_word, input_letter)
                 print(guessed_word)
                 letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
                 print("The letters haven't been yet guessed: " + letters_to_guessed)
                 if is_word_guessed(secret_word, guessed_word):
-                    print("You won!")
+                    print(colored("You won!", "red", attrs = ["blink"]))
                     return False
 
             if is_guess_in_word(input_letter, secret_word) == False:
                 incorrect_guesses -= 1
                 if incorrect_guesses == 0:
-                    print("You lost!")
+                    print(colored("Sorry, your word is not in the secret word!", "magenta"))
+                    print(colored("You lost!", "red", attrs = ["blink"]))
                     return False
-                print("Your guess is not in the secret word! Try again.")
+                print(colored("Your guess is not in the secret word! Try again.", "magenta"))
                 print("You have " + str(incorrect_guesses) + " incorrect guesses left.")
                 letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
                 print("The letters haven't been yet guessed: " + letters_to_guessed)
@@ -140,6 +141,6 @@ while play:
     print("You have 7 incorrect guesses, please enter one letter per round.")
     spaceman(secret_word)
     print("The secret word is: " + secret_word)
-    user_input = input("Do you want to play again? Y/N ")
+    user_input = input(colored("Do you want to play again? Y/N ", "cyan"))
     if user_input.lower() == "n":
         play = False
