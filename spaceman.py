@@ -1,5 +1,6 @@
 import random
 string = ""
+letters = []
 
 def load_word():
     '''
@@ -14,7 +15,6 @@ def load_word():
 
     words_list = words_list[0].split(' ')
     secret_word = random.choice(words_list)
-    print(secret_word)
     return secret_word
 
 def is_word_guessed(secret_word, letters_guessed):
@@ -95,15 +95,17 @@ def spaceman(secret_word):
 
 
     #TODO: show the player information about the game according to the project spec
-
     #TODO: Ask the player to guess one letter per round and check that it is only one letter
+    #TODO: Check if the guessed letter is in the secret or not and give the player feedback
+    #TODO: show the guessed word so far
+    #TODO: check if the game has been won or lost
+
     while True:
         input_letter = input("Please enter a letter: ")
         if len(input_letter) > 1:
             print("Please enter one letter at a time.")
         elif len(input_letter) == 0:
             print("You did not enter a letter.")
-    # #TODO: Check if the guessed letter is in the secret or not and give the player feedback
         else:
             if is_guess_in_word(input_letter, secret_word):
                 print("Your guess is in the secret word!")
@@ -114,10 +116,7 @@ def spaceman(secret_word):
                     return False
             if is_guess_in_word(input_letter, secret_word) == False:
                 print("Your guess is not in the secret word! Try again.")
-    #TODO: show the guessed word so far
-
-    #TODO: check if the game has been won or lost
-
+    user_input = input("Do you wanna play again?")
 
 # def test():
 #     list = ["u", "y", "e", "n"]
@@ -127,9 +126,14 @@ def spaceman(secret_word):
 # test()
 
 #These function calls that will start the game
-secret_word = load_word()
-print(secret_word)
-letters = ["_"] * len(secret_word)
 # print(letters)
-
-spaceman(secret_word)
+play = True
+while play:
+    secret_word = load_word()
+    print(secret_word)
+    letters = ["_"] * len(secret_word)
+    spaceman(secret_word)
+    print("The secret word is: " + secret_word)
+    user_input = input("Do you want to play again? Y/N ")
+    if user_input.lower() == "n":
+        play = False
