@@ -106,6 +106,9 @@ def spaceman(secret_word):
             if is_guess_in_word(input_letter, secret_word):
                 print(colored("Your guess is in the secret word!", "magenta"))
                 guessed_word = get_guessed_word(secret_word, input_letter)
+                print(guessed_word)
+                letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
+                print("The letters haven't been yet guessed: " + letters_to_guessed)
                 if is_word_guessed(secret_word, guessed_word):
                     print(colored("You won!", "red", attrs = ["blink"]))
                     return False
@@ -118,10 +121,8 @@ def spaceman(secret_word):
                     return False
                 print(colored("Your guess is not in the secret word! Try again.", "magenta"))
                 print("You have " + str(incorrect_guesses) + " incorrect guesses left.")
-
-            print(guessed_word)
-            letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
-            print("The letters haven't been yet guessed: " + letters_to_guessed)
+                letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
+                print("The letters haven't been yet guessed: " + letters_to_guessed)
 
 # def test():
 #     list = ["u", "y", "e", "n"]
@@ -132,15 +133,15 @@ def spaceman(secret_word):
 # test()
 
 #These function calls that will start the game
-playing = True
-while playing:
+play = True
+while play:
     secret_word = load_word()
     print(secret_word)
     letters = ["_"] * len(secret_word)
     print("Welcome to Spaceman Game!")
     print("You have 7 incorrect guesses, please enter one letter per round.")
     spaceman(secret_word)
-    print("The secret word is: " + colored(secret_word, attrs=["underline"]))
+    print("The secret word is: " + secret_word)
     user_input = input(colored("Do you want to play again? Y/N ", "cyan"))
     if user_input.lower() == "n":
-        playing = False
+        play = False
