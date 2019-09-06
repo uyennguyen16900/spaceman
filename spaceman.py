@@ -30,7 +30,7 @@ def is_word_guessed(secret_word, letters_guessed):
     Returns:
         bool: True only if all the letters of secret_word are in letters_guessed, False otherwise
     '''
-    # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
+    # Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
     i = 0
     while i < len(secret_word):
         if secret_word[i] != letters_guessed[i]:
@@ -64,7 +64,7 @@ def is_guess_in_word(guess, secret_word):
     Returns:
         bool: True if the guess is in the secret_word, False otherwise
     '''
-    #TODO: check if the letter guess is in the secret word
+    #Check if the letter guess is in the secret word
     i = 0
     while i < len(secret_word):
         if guess == secret_word[i]:
@@ -85,63 +85,59 @@ def spaceman(secret_word):
     Args:
       secret_word (string): the secret word to guess.
     '''
-
-    #TODO: show the player information about the game according to the project spec
-    #TODO: Ask the player to guess one letter per round and check that it is only one letter
-    #TODO: Check if the guessed letter is in the secret or not and give the player feedback
-    #TODO: show the guessed word so far
-    #TODO: check if the game has been won or lost
     incorrect_guesses = 7
     letters_to_guessed = "abcdefghijklmnopqrstuvwxyz"
-    length = len(letters_to_guessed)
-
     while True:
         print("----------------------------------------------------------")
         input_letter = input(colored("Please enter a letter: ", "cyan", attrs = ["bold"]))
-        if len(input_letter) > 1:
-            print(colored("Please enter one letter at a time.", "green"))
-        elif len(input_letter) == 0:
-            print(colored("You did not enter a letter.", "green"))
+        if input_letter in letters_to_guessed:
+            guessed_word = get_guessed_word(secret_word, input_letter)
+            if len(input_letter) > 1:
+                print(colored("Please enter one letter at a time.", "green"))
+            elif len(input_letter) == 0:
+                print(colored("You did not enter a letter.", "green"))
+            else:
+                if is_guess_in_word(input_letter, secret_word):
+                    print(colored("Your guess is in the secret word!", "magenta"))
+                    if is_word_guessed(secret_word, guessed_word):
+                        print(colored("You won!", "red", attrs = ["blink"]))
+                        return False
+
+                if is_guess_in_word(input_letter, secret_word) == False:
+                    incorrect_guesses -= 1
+                    if incorrect_guesses == 0:
+                        print(colored("Sorry, your word is not in the secret word!", "magenta"))
+                        print(colored("You lost!", "red", attrs = ["blink"]))
+                        return False
+                    print(colored("Your guess is not in the secret word! Try again.", "magenta"))
+
         else:
-            if is_guess_in_word(input_letter, secret_word):
-                print(colored("Your guess is in the secret word!", "magenta"))
-                guessed_word = get_guessed_word(secret_word, input_letter)
-                print(guessed_word)
-                letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
-                print("The letters haven't been yet guessed: " + letters_to_guessed)
-                if is_word_guessed(secret_word, guessed_word):
-                    print(colored("You won!", "red", attrs = ["blink"]))
-                    return False
+            print(colored("You already guessed this letter.", "blue"))
 
-            if is_guess_in_word(input_letter, secret_word) == False:
-                incorrect_guesses -= 1
-                if incorrect_guesses == 0:
-                    print(colored("Sorry, your word is not in the secret word!", "magenta"))
-                    print(colored("You lost!", "red", attrs = ["blink"]))
-                    return False
-                print(colored("Your guess is not in the secret word! Try again.", "magenta"))
-                print("You have " + str(incorrect_guesses) + " incorrect guesses left.")
-                letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
-                print("The letters haven't been yet guessed: " + letters_to_guessed)
+        print(guessed_word)
+        print("You have " + str(incorrect_guesses) + " incorrect guesses left.")
+        letters_to_guessed = remove_letter(letters_to_guessed, input_letter)
+        print("The letters haven't been yet guessed: " + letters_to_guessed)
 
-# def test():
-#     list = ["u", "y", "e", "n"]
-#     print(get_guessed_word("u", list))
-#     print(is_guess_in_word("u", "uyen"))
-#     print(is_word_guessed("uyei", "uyen"))
-#     print(remove_letter("uyen", "y"))
+
+def test():
+    list = ["u", "y", "e", "n"]
+    print(get_guessed_word("u", list))
+    print(is_guess_in_word("u", "uyen"))
+    print(is_word_guessed("uyei", "uyen"))
+    print(remove_letter("uyen", "y"))
 # test()
 
 #These function calls that will start the game
-play = True
-while play:
+playing = True
+while playing:
     secret_word = load_word()
-    print(secret_word)
+    # print(secret_word)
     letters = ["_"] * len(secret_word)
     print("Welcome to Spaceman Game!")
     print("You have 7 incorrect guesses, please enter one letter per round.")
     spaceman(secret_word)
-    print("The secret word is: " + secret_word)
+    print("The secret word is: " + colored(secret_word, attrs=['underline']))
     user_input = input(colored("Do you want to play again? Y/N ", "cyan"))
     if user_input.lower() == "n":
-        play = False
+        playing = False
