@@ -2,8 +2,6 @@ import random
 import sys
 from termcolor import colored
 
-letters = []
-
 def load_word():
     '''
     A function that reads a text file of words and randomly selects one to use as the secret word
@@ -46,11 +44,20 @@ def get_guessed_word(secret_word, letters_guessed):
         string: letters and underscores.  For letters in the word that the user has guessed correctly, the string should contain the letter at the correct position.  For letters in the word that the user has not yet guessed, shown an _ (underscore) instead.
     '''
     # Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
-    for letter in letters_guessed:
-        for index, letter_1 in enumerate(secret_word):
-            if letter == letter_1:
-                letters[index] = letter_1
-    string = "".join(letters)
+    # for letter in letters_guessed:
+    #     for index, letter_1 in enumerate(secret_word):
+    #         if letter == letter_1:
+    #             letters[index] = letter_1
+    # string = "".join(letters)
+    # return string
+
+    string = ""
+    for letter in secret_word:
+        if letter in letters_guessed:
+            string += letter
+        else:
+            string += "_"
+# string = "".join(letters)
     return string
 
 def is_guess_in_word(guess, secret_word):
@@ -85,15 +92,22 @@ def spaceman(secret_word):
     '''
     incorrect_guesses = 7
     letters_to_guessed = "abcdefghijklmnopqrstuvwxyz"
+    letters_guessed = []
+
     while True:
         print("----------------------------------------------------------")
+
         input_letter = input(colored("Please enter a letter: ", "cyan", attrs = ["bold"])).lower()
         if input_letter in letters_to_guessed:
-            guessed_word = get_guessed_word(secret_word, input_letter)
+            letters_guessed.append(input_letter)
+            guessed_word = get_guessed_word(secret_word, letters_guessed)
+
             if len(input_letter) > 1:
                 print(colored("Please enter one letter at a time.", "green"))
+
             elif len(input_letter) == 0:
                 print(colored("You did not enter a letter.", "green"))
+
             else:
                 if is_guess_in_word(input_letter, secret_word):
                     print(colored("Your guess is in the secret word!", "magenta"))
