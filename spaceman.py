@@ -87,7 +87,7 @@ def spaceman(secret_word):
     letters_to_guessed = "abcdefghijklmnopqrstuvwxyz"
     while True:
         print("----------------------------------------------------------")
-        input_letter = input(colored("Please enter a letter: ", "cyan", attrs = ["bold"]))
+        input_letter = input(colored("Please enter a letter: ", "cyan", attrs = ["bold"])).lower()
         if input_letter in letters_to_guessed:
             guessed_word = get_guessed_word(secret_word, input_letter)
             if len(input_letter) > 1:
