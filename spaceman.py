@@ -2,9 +2,7 @@ import random
 import sys
 from termcolor import colored
 
-string = ""
 letters = []
-
 
 def load_word():
     '''
@@ -47,7 +45,7 @@ def get_guessed_word(secret_word, letters_guessed):
     Returns:
         string: letters and underscores.  For letters in the word that the user has guessed correctly, the string should contain the letter at the correct position.  For letters in the word that the user has not yet guessed, shown an _ (underscore) instead.
     '''
-    #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
+    # Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
     for letter in letters_guessed:
         for index, letter_1 in enumerate(secret_word):
             if letter == letter_1:
