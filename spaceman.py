@@ -44,20 +44,12 @@ def get_guessed_word(secret_word, letters_guessed):
         string: letters and underscores.  For letters in the word that the user has guessed correctly, the string should contain the letter at the correct position.  For letters in the word that the user has not yet guessed, shown an _ (underscore) instead.
     '''
     # Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
-    # for letter in letters_guessed:
-    #     for index, letter_1 in enumerate(secret_word):
-    #         if letter == letter_1:
-    #             letters[index] = letter_1
-    # string = "".join(letters)
-    # return string
-
     string = ""
     for letter in secret_word:
         if letter in letters_guessed:
             string += letter
         else:
             string += "_"
-# string = "".join(letters)
     return string
 
 def is_guess_in_word(guess, secret_word):
@@ -132,13 +124,17 @@ def spaceman(secret_word):
         print("The letters haven't been yet guessed: " + letters_to_guessed)
 
 
-def test():
-    list = ["u", "y", "e", "n"]
-    print(get_guessed_word("u", list))
-    print(is_guess_in_word("u", "uyen"))
-    print(is_word_guessed("uyei", "uyen"))
-    print(remove_letter("uyen", "y"))
-# test()
+def test_is_guess_in_word():
+    assert is_guess_in_word("u", "uyen") == True
+    assert is_guess_in_word("i", "uyen") == False
+
+def test_is_word_guessed():
+    assert is_word_guessed("uyei", "uyen") == False
+    assert is_word_guessed("uyen", "uyen") == True
+
+def test_get_guessed_word():
+    assert get_guessed_word("uyen", ["u", "e"]) == "u_e_"
+    assert get_guessed_word("uyen", ["i", "o"]) == "____"
 
 #These function calls that will start the game
 playing = True
